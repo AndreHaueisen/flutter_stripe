@@ -13,28 +13,24 @@ import 'card_edit_event.dart';
 
 /// Customizable form that collects card information.
 class CardField extends StatefulWidget {
-  const CardField(
-      {required this.onCardChanged,
-      Key? key,
-      this.onFocus,
-      this.decoration,
-      this.enablePostalCode = false,
-      this.style,
-      this.autofocus = false,
-      this.dangerouslyGetFullCardDetails = false,
-      this.cursorColor,
-      this.numberHintText,
-      this.expirationHintText,
-      this.cvcHintText,
-      this.postalCodeHintText,
-      this.controller})
-      : super(key: key);
+  const CardField({
+    required this.onCardChanged,
+    required this.controller,
+    required this.focusNode,
+    Key? key,
+    this.decoration,
+    this.enablePostalCode = false,
+    this.style,
+    this.dangerouslyGetFullCardDetails = false,
+    this.cursorColor,
+    this.numberHintText,
+    this.expirationHintText,
+    this.cvcHintText,
+    this.postalCodeHintText,
+  }) : super(key: key);
 
   /// Decoration related to the input fields.
   final InputDecoration? decoration;
-
-  /// Callback that will be executed when a specific field gets focus.
-  final CardFocusCallback? onFocus;
 
   /// Callback that will be executed when the card information changes.
   final CardChangedCallback onCardChanged;
@@ -61,13 +57,11 @@ class CardField extends StatefulWidget {
   /// Hint text for the postal code field.
   final String? postalCodeHintText;
 
-  /// Defines whether or not to automatically focus on the cardfield/
-  /// Default is `false`.
-  final bool autofocus;
-
   /// Controller that can be use to execute several operations on the cardfield
   /// e.g (clear).
-  final CardEditController? controller;
+  final CardEditController controller;
+
+  final FocusNode focusNode;
 
   /// When true the Full card details will be returned.
   ///
@@ -83,36 +77,10 @@ class CardField extends StatefulWidget {
 }
 
 class _CardFieldState extends State<CardField> {
-  final FocusNode _node =
-      FocusNode(debugLabel: 'CardField', descendantsAreFocusable: false);
-
-  late CardEditController controller;
-
-  @override
-  void initState() {
-    _node.addListener(updateState);
-    controller = widget.controller ?? CardEditController();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _node
-      ..removeListener(updateState)
-      ..dispose();
-
-    controller.dispose();
-    super.dispose();
-  }
-
-  void updateState() {
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     final inputDecoration = effectiveDecoration(widget.decoration);
-    final style = effectiveCardStyle(inputDecoration);
+    final style = _effectiveCardStyle(inputDecoration);
 
     // Arbitrary values compared for both Android and iOS platform
     // For adding a framework input decorator, the platform one is removed
@@ -122,7 +90,7 @@ class _CardFieldState extends State<CardField> {
 
     final cardHeight = platformCardHeight - platformMargin.vertical;
     return InputDecorator(
-      isFocused: _node.hasFocus,
+      isFocused: widget.focusNode.hasFocus,
       decoration: inputDecoration,
       baseStyle: widget.style,
       child: SizedBox(
@@ -131,8 +99,8 @@ class _CardFieldState extends State<CardField> {
           delegate: const _NegativeMarginLayout(margin: platformMargin),
           child: _MethodChannelCardField(
             height: platformCardHeight,
-            focusNode: _node,
-            controller: controller,
+            focusNode: widget.focusNode,
+            controller: widget.controller,
             style: style,
             placeholder: CardPlaceholder(
               number: widget.numberHintText,
@@ -142,8 +110,6 @@ class _CardFieldState extends State<CardField> {
             ),
             enablePostalCode: widget.enablePostalCode,
             onCardChanged: widget.onCardChanged,
-            autofocus: widget.autofocus,
-            onFocus: widget.onFocus,
           ),
         ),
       ),
@@ -156,14 +122,12 @@ class _CardFieldState extends State<CardField> {
     return cardDecoration.applyDefaults(theme);
   }
 
-  CardStyle effectiveCardStyle(InputDecoration decoration) {
-    final fontSize = widget.style?.fontSize ??
-        Theme.of(context).textTheme.subtitle1?.fontSize ??
-        kCardFieldDefaultFontSize;
+  CardStyle _effectiveCardStyle(InputDecoration decoration) {
+    final fontSize =
+        widget.style?.fontSize ?? Theme.of(context).textTheme.subtitle1?.fontSize ?? kCardFieldDefaultFontSize;
 
-    final fontFamily = widget.style?.fontFamily ??
-        Theme.of(context).textTheme.subtitle1?.fontFamily ??
-        kCardFieldDefaultFontFamily;
+    final fontFamily =
+        widget.style?.fontFamily ?? Theme.of(context).textTheme.subtitle1?.fontFamily ?? kCardFieldDefaultFontFamily;
 
     return CardStyle(
       textColor: widget.style?.color,
@@ -207,15 +171,14 @@ class _MethodChannelCardField extends StatefulWidget {
   _MethodChannelCardField({
     required this.onCardChanged,
     required this.controller,
+    required this.focusNode,
     Key? key,
-    this.onFocus,
     this.style,
     this.placeholder,
     this.enablePostalCode = false,
     double? width,
     double? height = kCardFieldDefaultHeight,
     BoxConstraints? constraints,
-    this.focusNode,
     this.autofocus = false,
   })  : assert(constraints == null || constraints.debugAssertIsValid()),
         constraints = (width != null || height != null)
@@ -224,15 +187,14 @@ class _MethodChannelCardField extends StatefulWidget {
             : constraints,
         super(key: key);
 
+  final CardEditController controller;
+  final FocusNode focusNode;
   final BoxConstraints? constraints;
-  final CardFocusCallback? onFocus;
   final CardChangedCallback onCardChanged;
   final CardStyle? style;
   final CardPlaceholder? placeholder;
   final bool enablePostalCode;
-  final FocusNode? focusNode;
   final bool autofocus;
-  final CardEditController controller;
 
   // This is used in the platform side to register the view.
   static const _viewType = 'flutter.stripe/card_field';
@@ -249,12 +211,8 @@ class _MethodChannelCardField extends StatefulWidget {
 
 class _MethodChannelCardFieldState extends State<_MethodChannelCardField> {
   MethodChannel? _methodChannel;
-
-  final _focusNode =
-      FocusNode(debugLabel: 'CardField', descendantsAreFocusable: false);
-  FocusNode get _effectiveNode => widget.focusNode ?? _focusNode;
-
   CardStyle? _lastStyle;
+
   CardStyle resolveStyle(CardStyle? style) {
     final theme = Theme.of(context);
     final baseTextStyle = Theme.of(context).textTheme.subtitle1;
@@ -263,22 +221,18 @@ class _MethodChannelCardFieldState extends State<_MethodChannelCardField> {
       backgroundColor: Colors.transparent,
       borderColor: Colors.transparent,
       borderRadius: 0,
-      cursorColor: theme.textSelectionTheme.cursorColor ?? theme.primaryColor,
-      textColor: style?.textColor ??
-          baseTextStyle?.color ??
-          kCardFieldDefaultTextColor,
+      cursorColor: style?.cursorColor ?? theme.textSelectionTheme.cursorColor ?? theme.primaryColor,
+      textColor: style?.textColor ?? baseTextStyle?.color ?? kCardFieldDefaultTextColor,
       fontSize: baseTextStyle?.fontSize ?? kCardFieldDefaultFontSize,
       fontFamily: baseTextStyle?.fontFamily ?? kCardFieldDefaultFontFamily,
-      textErrorColor:
-          theme.inputDecorationTheme.errorStyle?.color ?? theme.errorColor,
-      placeholderColor:
-          theme.inputDecorationTheme.hintStyle?.color ?? theme.hintColor,
+      textErrorColor: theme.inputDecorationTheme.errorStyle?.color ?? theme.errorColor,
+      placeholderColor: theme.inputDecorationTheme.hintStyle?.color ?? theme.hintColor,
     ).apply(style);
   }
 
   CardPlaceholder? _lastPlaceholder;
-  CardPlaceholder resolvePlaceholder(CardPlaceholder? placeholder) =>
-      CardPlaceholder(
+
+  CardPlaceholder resolvePlaceholder(CardPlaceholder? placeholder) => CardPlaceholder(
         number: '1234123412341234',
         expiration: 'MM/YY',
         cvc: 'CVC',
@@ -286,19 +240,11 @@ class _MethodChannelCardFieldState extends State<_MethodChannelCardField> {
 
   @override
   void initState() {
+    super.initState();
+
     widget.controller.addListener(() {
       _handleCardEditEvent(widget.controller.value);
     });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener(() {
-      _handleCardEditEvent(widget.controller.value);
-    });
-    _focusNode.dispose();
-    super.dispose();
   }
 
   @override
@@ -312,7 +258,7 @@ class _MethodChannelCardFieldState extends State<_MethodChannelCardField> {
       'postalCodeEnabled': widget.enablePostalCode,
     };
 
-    Widget platform;
+    late final Widget platform;
     if (defaultTargetPlatform == TargetPlatform.android) {
       platform = _AndroidCardField(
         key: _MethodChannelCardField._key,
@@ -330,24 +276,17 @@ class _MethodChannelCardFieldState extends State<_MethodChannelCardField> {
     } else {
       throw UnsupportedError('Unsupported platform view');
     }
-    final constraints = widget.constraints ??
-        const BoxConstraints.expand(height: kCardFieldDefaultHeight);
+    final constraints = widget.constraints ?? const BoxConstraints.expand(height: kCardFieldDefaultHeight);
 
-    return Listener(
-      onPointerDown: (_) {
-        if (!_effectiveNode.hasFocus) {
-          _effectiveNode.requestFocus();
-        }
-      },
-      child: Focus(
-        autofocus: true,
-        descendantsAreFocusable: false,
-        focusNode: _effectiveNode,
-        onFocusChange: _handleFrameworkFocusChanged,
-        child: ConstrainedBox(
-          constraints: constraints,
-          child: platform,
-        ),
+    return Focus(
+      autofocus: false,
+      descendantsAreFocusable: false,
+      focusNode: widget.focusNode,
+      onFocusChange: _handleFrameworkFocusChanged,
+      skipTraversal: true,
+      child: ConstrainedBox(
+        constraints: constraints,
+        child: platform,
       ),
     );
   }
@@ -361,7 +300,7 @@ class _MethodChannelCardFieldState extends State<_MethodChannelCardField> {
         'cardStyle': style.toJson(),
       });
     }
-    _lastStyle = style;
+    setState(() => _lastStyle = style);
     super.didChangeDependencies();
   }
 
@@ -386,12 +325,11 @@ class _MethodChannelCardFieldState extends State<_MethodChannelCardField> {
         'placeholder': placeholder.toJson(),
       });
     }
-    _lastPlaceholder = placeholder;
+    setState(() => _lastPlaceholder = placeholder);
     super.didUpdateWidget(oldWidget);
   }
 
   void onPlatformViewCreated(int viewId) {
-    _focusNode.debugLabel = 'CardField(id: $viewId)';
     _methodChannel = MethodChannel('flutter.stripe/card_field/$viewId');
     _methodChannel?.setMethodCallHandler((call) async {
       if (call.method == 'topFocusChange') {
@@ -419,12 +357,9 @@ class _MethodChannelCardFieldState extends State<_MethodChannelCardField> {
     try {
       final map = Map<String, dynamic>.from(arguments);
       final field = CardFieldFocusName.fromJson(map);
-      if (field.focusedField != null &&
-          WidgetsBinding.instance!.focusManager.primaryFocus !=
-              _effectiveNode) {
-        _effectiveNode.requestFocus();
+      if (field.focusedField != null && WidgetsBinding.instance!.focusManager.primaryFocus != widget.focusNode) {
+        widget.focusNode.requestFocus();
       }
-      widget.onFocus?.call(field.focusedField);
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       log('An error ocurred while while parsing card arguments, this should not happen, please consider creating an issue at https://github.com/flutter-stripe/flutter_stripe/issues/new');
@@ -489,9 +424,7 @@ class _AndroidCardField extends StatelessWidget {
     return PlatformViewLink(
       viewType: viewType,
       surfaceFactory: (context, controller) => AndroidViewSurface(
-        controller: controller
-            // ignore: avoid_as
-            as AndroidViewController,
+        controller: controller as AndroidViewController,
         gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
         hitTestBehavior: PlatformViewHitTestBehavior.opaque,
       ),
@@ -540,4 +473,3 @@ const kCardFieldDefaultTextColor = Colors.black;
 const kCardFieldDefaultFontFamily = 'Roboto';
 
 typedef CardChangedCallback = void Function(CardFieldInputDetails? details);
-typedef CardFocusCallback = void Function(CardFieldName? focusedField);
