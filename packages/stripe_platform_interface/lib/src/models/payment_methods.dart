@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:stripe_platform_interface/stripe_platform_interface.dart';
 
 import 'address.dart';
 import 'payment_intents.dart';
@@ -100,7 +101,7 @@ class AuBecsDebit with _$AuBecsDebit {
     /// Last 4 digits of the bankaccount number.
     String? last4,
 
-    /// Siz digit number identifying the bank or branch for this account.
+    /// Six digit number identifying the bank or branch for this account.
     String? bsbNumber,
   }) = _AuBecsDebit;
 
@@ -258,6 +259,7 @@ enum PaymentMethodType {
   Oxxo,
   Sofort,
   Upi,
+  // WeChatPay,
   Unknown
 }
 
@@ -321,6 +323,18 @@ class PaymentMethodParams with _$PaymentMethodParams {
     /// The name of bank.
     String? bankName,
   }) = _PaymentMethodParamsIdeal;
+
+  @JsonSerializable(explicitToJson: true)
+  @FreezedUnionValue('AuBecsDebit')
+
+  /// Config parameters for aubecs debit payment method.
+  const factory PaymentMethodParams.aubecs({
+    /// form input details
+    required AubecsFormInputDetails formDetails,
+
+    /// Billing information.
+    BillingDetails? billingDetails,
+  }) = _PaymentMethodParamsAubecs;
 
   @JsonSerializable(explicitToJson: true)
   @FreezedUnionValue('Bancontact')
@@ -418,6 +432,13 @@ class PaymentMethodParams with _$PaymentMethodParams {
     /// Billing information.
     BillingDetails? billingDetails,
   }) = _PaymentMethodParamsOxxo;
+
+  // TODO uncomment and regenerate when we can re-enable wechat pay
+  // @JsonSerializable(explicitToJson: true)
+  // @FreezedUnionValue('WeChatPay')
+  //  const factory PaymentMethodParams.weChatPay({
+  //   String? appId,
+  // }) = _PaymentMethodParamsWechat;
 
   factory PaymentMethodParams.fromJson(Map<String, dynamic> json) =>
       _$PaymentMethodParamsFromJson(json);

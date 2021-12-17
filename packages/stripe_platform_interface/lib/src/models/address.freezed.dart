@@ -1,5 +1,6 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'address.dart';
 
@@ -37,7 +38,7 @@ class _$AddressTearOff {
     );
   }
 
-  Address fromJson(Map<String, Object> json) {
+  Address fromJson(Map<String, Object?> json) {
     return Address.fromJson(json);
   }
 }
@@ -203,7 +204,7 @@ class _$_Address implements _Address {
       required this.state});
 
   factory _$_Address.fromJson(Map<String, dynamic> json) =>
-      _$_$_AddressFromJson(json);
+      _$$_AddressFromJson(json);
 
   @override
 
@@ -238,32 +239,20 @@ class _$_Address implements _Address {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Address &&
-            (identical(other.city, city) ||
-                const DeepCollectionEquality().equals(other.city, city)) &&
-            (identical(other.country, country) ||
-                const DeepCollectionEquality()
-                    .equals(other.country, country)) &&
-            (identical(other.line1, line1) ||
-                const DeepCollectionEquality().equals(other.line1, line1)) &&
-            (identical(other.line2, line2) ||
-                const DeepCollectionEquality().equals(other.line2, line2)) &&
+        (other.runtimeType == runtimeType &&
+            other is _Address &&
+            (identical(other.city, city) || other.city == city) &&
+            (identical(other.country, country) || other.country == country) &&
+            (identical(other.line1, line1) || other.line1 == line1) &&
+            (identical(other.line2, line2) || other.line2 == line2) &&
             (identical(other.postalCode, postalCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.postalCode, postalCode)) &&
-            (identical(other.state, state) ||
-                const DeepCollectionEquality().equals(other.state, state)));
+                other.postalCode == postalCode) &&
+            (identical(other.state, state) || other.state == state));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(city) ^
-      const DeepCollectionEquality().hash(country) ^
-      const DeepCollectionEquality().hash(line1) ^
-      const DeepCollectionEquality().hash(line2) ^
-      const DeepCollectionEquality().hash(postalCode) ^
-      const DeepCollectionEquality().hash(state);
+      Object.hash(runtimeType, city, country, line1, line2, postalCode, state);
 
   @JsonKey(ignore: true)
   @override
@@ -272,7 +261,7 @@ class _$_Address implements _Address {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_AddressToJson(this);
+    return _$$_AddressToJson(this);
   }
 }
 
@@ -290,27 +279,27 @@ abstract class _Address implements Address {
   @override
 
   /// City, town or district.
-  String? get city => throw _privateConstructorUsedError;
+  String? get city;
   @override
 
   /// Country
-  String? get country => throw _privateConstructorUsedError;
+  String? get country;
   @override
 
   /// Address line1 (e.g. Street, C/O , PO Box).
-  String? get line1 => throw _privateConstructorUsedError;
+  String? get line1;
   @override
 
   /// Address line2 (e.g. building, appartment or unit).
-  String? get line2 => throw _privateConstructorUsedError;
+  String? get line2;
   @override
 
   /// ZIP or postal code.
-  String? get postalCode => throw _privateConstructorUsedError;
+  String? get postalCode;
   @override
 
   /// State or province.
-  String? get state => throw _privateConstructorUsedError;
+  String? get state;
   @override
   @JsonKey(ignore: true)
   _$AddressCopyWith<_Address> get copyWith =>

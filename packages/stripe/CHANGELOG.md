@@ -1,3 +1,35 @@
+## 2.0.2
+
+- New params `primaryButtonColor`, `billingDetails` and `allowsDelayedPaymentMethods` for `initPaymentSheet`
+- Fixed iOS focus issues #408
+
+## 2.0.1
+
+ - **FIX**: focus issue on CardFormField on Android. #397
+ - **DOCS**: correct AppCompat mention in README.md. #392
+
+## 2.0.0
+** First stable release **
+
+** Breaking changes ** 
+- Temporarily disable Wechat
+
+Other changes
+- add openApplePaySetup method
+- several fixes by Stripe SDK ([v0.2.1](https://github.com/stripe/stripe-react-native/releases/tag/v0.2.1), [v0.2.2](https://github.com/stripe/stripe-react-native/releases/tag/v0.2.2))
+- Focus issues on Android #14 are fixed
+
+## 1.3.0
+
+** BREAKING CHANGES **
+- Deprecate redundant parameters for payment sheet.
+
+Other changes 
+- Add new multiline card form.
+- Add Stripe Google pay integration.
+- Add WeChat payment method.
+- Improved example app.
+
 ## 1.2.0
 
 ** Breaking changes **

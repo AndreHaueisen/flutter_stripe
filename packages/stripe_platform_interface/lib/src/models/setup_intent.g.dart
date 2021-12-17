@@ -6,27 +6,26 @@ part of 'setup_intent.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_SetupIntent _$_$_SetupIntentFromJson(Map<String, dynamic> json) {
-  return _$_SetupIntent(
-    id: json['id'] as String,
-    status: json['status'] as String,
-    livemode: json['livemode'] as bool,
-    clientSecret: json['clientSecret'] as String,
-    paymentMethodId: json['paymentMethodId'] as String,
-    usage: json['usage'] as String,
-    paymentMethodTypes: (json['paymentMethodTypes'] as List<dynamic>)
-        .map((e) => _$enumDecode(_$PaymentMethodTypeEnumMap, e))
-        .toList(),
-    description: json['description'] as String?,
-    created: json['created'] as String?,
-    lastSetupError: json['lastSetupError'] == null
-        ? null
-        : LastSetupError.fromJson(
-            json['lastSetupError'] as Map<String, dynamic>),
-  );
-}
+_$_SetupIntent _$$_SetupIntentFromJson(Map<String, dynamic> json) =>
+    _$_SetupIntent(
+      id: json['id'] as String,
+      status: json['status'] as String,
+      livemode: json['livemode'] as bool,
+      clientSecret: json['clientSecret'] as String,
+      paymentMethodId: json['paymentMethodId'] as String,
+      usage: json['usage'] as String,
+      paymentMethodTypes: (json['paymentMethodTypes'] as List<dynamic>)
+          .map((e) => $enumDecode(_$PaymentMethodTypeEnumMap, e))
+          .toList(),
+      description: json['description'] as String?,
+      created: json['created'] as String?,
+      lastSetupError: json['lastSetupError'] == null
+          ? null
+          : LastSetupError.fromJson(
+              json['lastSetupError'] as Map<String, dynamic>),
+    );
 
-Map<String, dynamic> _$_$_SetupIntentToJson(_$_SetupIntent instance) =>
+Map<String, dynamic> _$$_SetupIntentToJson(_$_SetupIntent instance) =>
     <String, dynamic>{
       'id': instance.id,
       'status': instance.status,
@@ -41,32 +40,6 @@ Map<String, dynamic> _$_$_SetupIntentToJson(_$_SetupIntent instance) =>
       'created': instance.created,
       'lastSetupError': instance.lastSetupError?.toJson(),
     };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
 
 const _$PaymentMethodTypeEnumMap = {
   PaymentMethodType.AfterpayClearpay: 'AfterpayClearpay',
@@ -89,14 +62,13 @@ const _$PaymentMethodTypeEnumMap = {
   PaymentMethodType.Unknown: 'Unknown',
 };
 
-_$_LastSetupError _$_$_LastSetupErrorFromJson(Map<String, dynamic> json) {
-  return _$_LastSetupError(
-    code: json['code'] as String,
-    message: json['message'] as String,
-  );
-}
+_$_LastSetupError _$$_LastSetupErrorFromJson(Map<String, dynamic> json) =>
+    _$_LastSetupError(
+      code: json['code'] as String,
+      message: json['message'] as String,
+    );
 
-Map<String, dynamic> _$_$_LastSetupErrorToJson(_$_LastSetupError instance) =>
+Map<String, dynamic> _$$_LastSetupErrorToJson(_$_LastSetupError instance) =>
     <String, dynamic>{
       'code': instance.code,
       'message': instance.message,

@@ -1,5 +1,6 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'errors.dart';
 
@@ -29,7 +30,7 @@ class _$StripeErrorTearOff {
     );
   }
 
-  StripeError<T> fromJson<T>(Map<String, Object> json) {
+  StripeError<T> fromJson<T>(Map<String, Object?> json) {
     return StripeError<T>.fromJson(json);
   }
 }
@@ -137,7 +138,7 @@ class _$_StripeErrorGeneric<T> implements _StripeErrorGeneric<T> {
           required this.code});
 
   factory _$_StripeErrorGeneric.fromJson(Map<String, dynamic> json) =>
-      _$_$_StripeErrorGenericFromJson(json);
+      _$$_StripeErrorGenericFromJson(json);
 
   @override
   final String message;
@@ -153,19 +154,15 @@ class _$_StripeErrorGeneric<T> implements _StripeErrorGeneric<T> {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _StripeErrorGeneric<T> &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
-            (identical(other.code, code) ||
-                const DeepCollectionEquality().equals(other.code, code)));
+        (other.runtimeType == runtimeType &&
+            other is _StripeErrorGeneric<T> &&
+            (identical(other.message, message) || other.message == message) &&
+            const DeepCollectionEquality().equals(other.code, code));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(code);
+  int get hashCode => Object.hash(
+      runtimeType, message, const DeepCollectionEquality().hash(code));
 
   @JsonKey(ignore: true)
   @override
@@ -175,7 +172,7 @@ class _$_StripeErrorGeneric<T> implements _StripeErrorGeneric<T> {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_StripeErrorGenericToJson(this);
+    return _$$_StripeErrorGenericToJson(this);
   }
 }
 
@@ -189,10 +186,10 @@ abstract class _StripeErrorGeneric<T> implements StripeError<T> {
       _$_StripeErrorGeneric<T>.fromJson;
 
   @override
-  String get message => throw _privateConstructorUsedError;
+  String get message;
   @override
   @JsonKey(fromJson: _dataFromJson, toJson: _dataToJson)
-  T get code => throw _privateConstructorUsedError;
+  T get code;
   @override
   @JsonKey(ignore: true)
   _$StripeErrorGenericCopyWith<T, _StripeErrorGeneric<T>> get copyWith =>
@@ -213,7 +210,7 @@ class _$StripeExceptionTearOff {
     );
   }
 
-  StripeException fromJson(Map<String, Object> json) {
+  StripeException fromJson(Map<String, Object?> json) {
     return StripeException.fromJson(json);
   }
 }
@@ -314,7 +311,7 @@ class _$_StripeException implements _StripeException {
   const _$_StripeException({required this.error});
 
   factory _$_StripeException.fromJson(Map<String, dynamic> json) =>
-      _$_$_StripeExceptionFromJson(json);
+      _$$_StripeExceptionFromJson(json);
 
   @override
 
@@ -329,14 +326,13 @@ class _$_StripeException implements _StripeException {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _StripeException &&
-            (identical(other.error, error) ||
-                const DeepCollectionEquality().equals(other.error, error)));
+        (other.runtimeType == runtimeType &&
+            other is _StripeException &&
+            (identical(other.error, error) || other.error == error));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(error);
+  int get hashCode => Object.hash(runtimeType, error);
 
   @JsonKey(ignore: true)
   @override
@@ -345,7 +341,7 @@ class _$_StripeException implements _StripeException {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_StripeExceptionToJson(this);
+    return _$$_StripeExceptionToJson(this);
   }
 }
 
@@ -359,7 +355,7 @@ abstract class _StripeException implements StripeException {
   @override
 
   /// error details
-  LocalizedErrorMessage get error => throw _privateConstructorUsedError;
+  LocalizedErrorMessage get error;
   @override
   @JsonKey(ignore: true)
   _$StripeExceptionCopyWith<_StripeException> get copyWith =>
@@ -392,7 +388,7 @@ class _$LocalizedErrorMessageTearOff {
     );
   }
 
-  LocalizedErrorMessage fromJson(Map<String, Object> json) {
+  LocalizedErrorMessage fromJson(Map<String, Object?> json) {
     return LocalizedErrorMessage.fromJson(json);
   }
 }
@@ -565,7 +561,7 @@ class _$_LocalizedErrorMessage implements _LocalizedErrorMessage {
       this.type});
 
   factory _$_LocalizedErrorMessage.fromJson(Map<String, dynamic> json) =>
-      _$_$_LocalizedErrorMessageFromJson(json);
+      _$$_LocalizedErrorMessageFromJson(json);
 
   @override
 
@@ -600,34 +596,22 @@ class _$_LocalizedErrorMessage implements _LocalizedErrorMessage {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _LocalizedErrorMessage &&
-            (identical(other.code, code) ||
-                const DeepCollectionEquality().equals(other.code, code)) &&
+        (other.runtimeType == runtimeType &&
+            other is _LocalizedErrorMessage &&
+            (identical(other.code, code) || other.code == code) &&
             (identical(other.localizedMessage, localizedMessage) ||
-                const DeepCollectionEquality()
-                    .equals(other.localizedMessage, localizedMessage)) &&
-            (identical(other.message, message) ||
-                const DeepCollectionEquality()
-                    .equals(other.message, message)) &&
+                other.localizedMessage == localizedMessage) &&
+            (identical(other.message, message) || other.message == message) &&
             (identical(other.stripeErrorCode, stripeErrorCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.stripeErrorCode, stripeErrorCode)) &&
+                other.stripeErrorCode == stripeErrorCode) &&
             (identical(other.declineCode, declineCode) ||
-                const DeepCollectionEquality()
-                    .equals(other.declineCode, declineCode)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)));
+                other.declineCode == declineCode) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(code) ^
-      const DeepCollectionEquality().hash(localizedMessage) ^
-      const DeepCollectionEquality().hash(message) ^
-      const DeepCollectionEquality().hash(stripeErrorCode) ^
-      const DeepCollectionEquality().hash(declineCode) ^
-      const DeepCollectionEquality().hash(type);
+  int get hashCode => Object.hash(runtimeType, code, localizedMessage, message,
+      stripeErrorCode, declineCode, type);
 
   @JsonKey(ignore: true)
   @override
@@ -637,7 +621,7 @@ class _$_LocalizedErrorMessage implements _LocalizedErrorMessage {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_LocalizedErrorMessageToJson(this);
+    return _$$_LocalizedErrorMessageToJson(this);
   }
 }
 
@@ -656,27 +640,27 @@ abstract class _LocalizedErrorMessage implements LocalizedErrorMessage {
   @override
 
   /// The error code for example Cancelled
-  FailureCode get code => throw _privateConstructorUsedError;
+  FailureCode get code;
   @override
 
   /// Localized error message if any
-  String? get localizedMessage => throw _privateConstructorUsedError;
+  String? get localizedMessage;
   @override
 
   /// Generic untranslated error message.
-  String? get message => throw _privateConstructorUsedError;
+  String? get message;
   @override
 
   /// Stripe error code
-  String? get stripeErrorCode => throw _privateConstructorUsedError;
+  String? get stripeErrorCode;
   @override
 
   /// Code in case payment is declined
-  String? get declineCode => throw _privateConstructorUsedError;
+  String? get declineCode;
   @override
 
   /// Error type
-  String? get type => throw _privateConstructorUsedError;
+  String? get type;
   @override
   @JsonKey(ignore: true)
   _$LocalizedErrorMessageCopyWith<_LocalizedErrorMessage> get copyWith =>

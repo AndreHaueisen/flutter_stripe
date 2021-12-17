@@ -2,6 +2,8 @@ import 'package:flutter/painting.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import 'color.dart';
+
 part 'card_field_input.freezed.dart';
 part 'card_field_input.g.dart';
 
@@ -71,6 +73,30 @@ class CardStyle with _$CardStyle {
 
 @freezed
 
+/// Styiling information for the cardfield.
+class CardFormStyle with _$CardFormStyle {
+  @JsonSerializable(explicitToJson: true)
+  factory CardFormStyle({
+    @JsonKey(toJson: ColorKey.toJson, fromJson: ColorKey.fromJson)
+
+        /// Background color of the cardformfield
+        ///
+        /// Make sure that there is enough contrast with the text color.
+        Color? backgroundColor,
+  }) = _CardFormStyleConstructor;
+
+  factory CardFormStyle.fromJson(Map<String, dynamic> json) =>
+      _$CardFormStyleFromJson(json);
+
+  CardFormStyle._();
+
+  CardFormStyle apply(CardFormStyle? style) => copyWith(
+        backgroundColor: style?.backgroundColor ?? backgroundColor,
+      );
+}
+
+@freezed
+
 /// Localized text for the placeholders of the card fields.
 class CardPlaceholder with _$CardPlaceholder {
   @JsonSerializable(explicitToJson: true)
@@ -104,28 +130,12 @@ class CardPlaceholder with _$CardPlaceholder {
       );
 }
 
-/// Deserialization object for colors.
-///
-/// This object is used to translate Flutter color objects to hex strings used by the stripe sdk.
-class ColorKey {
-  const ColorKey();
-
-  static String? toJson(Color? color) {
-    if (color != null) {
-      // ignore: lines_longer_than_80_chars
-      return '#${color.value.toRadixString(16).padLeft(8, '0').toUpperCase()}';
-    }
-  }
-
-  static Color? fromJson(value) {
-    throw UnimplementedError();
-  }
-}
-
 @freezed
 
 /// User input details.
 class CardFieldInputDetails with _$CardFieldInputDetails {
+  const CardFieldInputDetails._();
+
   @JsonSerializable(explicitToJson: true)
   const factory CardFieldInputDetails({
     /// Indicates whether the card field input is complete.
@@ -145,6 +155,14 @@ class CardFieldInputDetails with _$CardFieldInputDetails {
 
     /// Brand of the card.
     String? brand,
+
+    /// Card number.
+    /// This information is not available by default to comply with the PCI compliance
+    String? number,
+
+    /// CVC code.
+    /// This information is not available by default to comply with the PCI compliance
+    String? cvc,
   }) = _CardFieldInputDetails;
 
   factory CardFieldInputDetails.fromJson(Map<String, dynamic> json) =>

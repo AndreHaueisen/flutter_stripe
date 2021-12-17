@@ -2,6 +2,7 @@ package com.reactnativestripesdk
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -15,10 +16,8 @@ import android.widget.FrameLayout
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
-import com.stripe.android.paymentsheet.PaymentOptionCallback
-import com.stripe.android.paymentsheet.PaymentSheet
-import com.stripe.android.paymentsheet.PaymentSheetResult
-import com.stripe.android.paymentsheet.PaymentSheetResultCallback
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.stripe.android.paymentsheet.*
 import com.stripe.android.paymentsheet.model.PaymentOption
 import java.io.ByteArrayOutputStream
 
@@ -28,12 +27,14 @@ class PaymentSheetFragment : Fragment() {
   private var paymentIntentClientSecret: String? = null
   private var setupIntentClientSecret: String? = null
   private lateinit var paymentSheetConfiguration: PaymentSheet.Configuration
+  private lateinit var localBroadcastManager: LocalBroadcastManager
 
   override fun onCreateView(
     inflater: LayoutInflater,
     container: ViewGroup?,
     savedInstanceState: Bundle?
   ): View {
+    localBroadcastManager = LocalBroadcastManager.getInstance(requireContext())
     return FrameLayout(requireActivity()).also {
       it.visibility = View.GONE
     }
@@ -44,9 +45,12 @@ class PaymentSheetFragment : Fragment() {
     val merchantDisplayName = arguments?.getString("merchantDisplayName").orEmpty()
     val customerId = arguments?.getString("customerId").orEmpty()
     val customerEphemeralKeySecret = arguments?.getString("customerEphemeralKeySecret").orEmpty()
-    val countryCode = arguments?.getString("countryCode").orEmpty()
+    val countryCode = arguments?.getString("merchantCountryCode").orEmpty()
     val googlePayEnabled = arguments?.getBoolean("googlePay")
     val testEnv = arguments?.getBoolean("testEnv")
+    val allowsDelayedPaymentMethods = arguments?.getBoolean("allowsDelayedPaymentMethods")
+    val primaryButtonColorHexStr = arguments?.getString("primaryButtonColor").orEmpty()
+    val billingDetailsBundle = arguments?.getBundle("defaultBillingDetails")
     paymentIntentClientSecret = arguments?.getString("paymentIntentClientSecret").orEmpty()
     setupIntentClientSecret = arguments?.getString("setupIntentClientSecret").orEmpty()
 
@@ -61,7 +65,7 @@ class PaymentSheetFragment : Fragment() {
           intent.putExtra("label", paymentOption.label)
           intent.putExtra("image", imageString)
         }
-        activity?.sendBroadcast(intent)
+        localBroadcastManager.sendBroadcast(intent)
       }
     }
 
@@ -70,12 +74,35 @@ class PaymentSheetFragment : Fragment() {
         val intent = Intent(ON_PAYMENT_RESULT_ACTION)
 
         intent.putExtra("paymentResult", paymentResult)
-          activity?.sendBroadcast(intent)
+        localBroadcastManager.sendBroadcast(intent)
       }
+    }
+
+    var primaryButtonColor: ColorStateList? = null
+    if (primaryButtonColorHexStr != null && primaryButtonColorHexStr.isNotEmpty()) {
+      primaryButtonColor = ColorStateList.valueOf(Color.parseColor(primaryButtonColorHexStr))
+    }
+
+    var defaultBillingDetails: PaymentSheet.BillingDetails? = null
+    if (billingDetailsBundle != null) {
+      val addressBundle = billingDetailsBundle.getBundle("address")
+      val address = PaymentSheet.Address(addressBundle?.getString("city"),
+                                          addressBundle?.getString("country"),
+                                          addressBundle?.getString("line1"),
+                                          addressBundle?.getString("line2"),
+                                          addressBundle?.getString("postalCode"),
+                                          addressBundle?.getString("state"))
+      defaultBillingDetails = PaymentSheet.BillingDetails(address,
+                                                          billingDetailsBundle?.getString("email"),
+                                                          billingDetailsBundle?.getString("name"),
+                                                          billingDetailsBundle?.getString("phone"))
     }
 
     paymentSheetConfiguration = PaymentSheet.Configuration(
       merchantDisplayName = merchantDisplayName,
+      allowsDelayedPaymentMethods = allowsDelayedPaymentMethods ?: false,
+      primaryButtonColor = primaryButtonColor,
+      defaultBillingDetails=defaultBillingDetails,
       customer = if (customerId.isNotEmpty() && customerEphemeralKeySecret.isNotEmpty()) PaymentSheet.CustomerConfiguration(
         id = customerId,
         ephemeralKeySecret = customerEphemeralKeySecret
@@ -92,23 +119,23 @@ class PaymentSheetFragment : Fragment() {
     } else {
       paymentSheet = PaymentSheet(this, paymentResultCallback)
       val intent = Intent(ON_INIT_PAYMENT_SHEET)
-      activity?.sendBroadcast(intent)
+      localBroadcastManager.sendBroadcast(intent)
     }
 
     val intent = Intent(ON_FRAGMENT_CREATED)
-    activity?.sendBroadcast(intent)
+    localBroadcastManager.sendBroadcast(intent)
   }
 
   fun present() {
-    if (!paymentIntentClientSecret.isNullOrEmpty()) {
-      paymentSheet?.presentWithPaymentIntent(paymentIntentClientSecret!!, paymentSheetConfiguration)
-    } else if (!setupIntentClientSecret.isNullOrEmpty()) {
-      paymentSheet?.presentWithSetupIntent(setupIntentClientSecret!!, paymentSheetConfiguration)
+    if(paymentSheet != null) {
+      if (!paymentIntentClientSecret.isNullOrEmpty()) {
+        paymentSheet?.presentWithPaymentIntent(paymentIntentClientSecret!!, paymentSheetConfiguration)
+      } else if (!setupIntentClientSecret.isNullOrEmpty()) {
+        paymentSheet?.presentWithSetupIntent(setupIntentClientSecret!!, paymentSheetConfiguration)
+      }
+    } else if(flowController != null) {
+      flowController?.presentPaymentOptions()
     }
-  }
-
-  fun presentPaymentOptions() {
-    flowController?.presentPaymentOptions()
   }
 
   fun confirmPayment() {
@@ -128,7 +155,7 @@ class PaymentSheetFragment : Fragment() {
           intent.putExtra("label", paymentOption.label)
           intent.putExtra("image", imageString)
         }
-        activity?.sendBroadcast(intent)
+        localBroadcastManager.sendBroadcast(intent)
       }
     }
 

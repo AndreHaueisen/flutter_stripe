@@ -6,9 +6,6 @@
 
 [![pub package](https://img.shields.io/pub/v/flutter_stripe.svg)](https://pub.dev/packages/flutter_stripe) ![build](https://img.shields.io/github/workflow/status/flutter-stripe/flutter_stripe/all_plugins?logo=github)
 
-> 🚨 flutter_stripe is in beta - please provide feedback (and/or contribute) if you find issues 💙️
-
-
 The Stripe Flutter SDK allows you to build delightful payment experiences in your native Android and iOS apps using Flutter. We provide powerful and customizable UI screens and elements that can be used out-of-the-box to collect your users' payment details.
 
 
@@ -48,11 +45,11 @@ dart pub add flutter_stripe
 
 - Android 5.0 (API level 21) and above
 - Kotlin version 1.5.0 and above: [example](https://github.com/flutter-stripe/flutter_stripe/blob/79b201a2e9b827196d6a97bb41e1d0e526632a5a/example/android/build.gradle#L2)
-- Using a descendant of `Theme.AppCompact` for your activity: [example](https://github.com/flutter-stripe/flutter_stripe/main/example/android/app/src/main/res/values/styles.xml#L15), [example night theme](https://github.com/flutter-stripe/flutter_stripe/blob/main/example/android/app/src/main/res/values-night/styles.xml#L16)
+- Using a descendant of `Theme.AppCompat` for your activity: [example](https://github.com/flutter-stripe/flutter_stripe/main/example/android/app/src/main/res/values/styles.xml#L15), [example night theme](https://github.com/flutter-stripe/flutter_stripe/blob/main/example/android/app/src/main/res/values-night/styles.xml#L16)
 - Using an up-to-date Android gradle build tools version: [example](https://github.com/flutter-stripe/flutter_stripe/blob/main/example/android/build.gradle#L9) and an up-to-date gradle version accordingly: [example](https://github.com/flutter-stripe/flutter_stripe/blob/main/example/android/gradle/wrapper/gradle-wrapper.properties#L6) 
 - Using `FlutterFragmentActivity` instead of `FlutterActivity` in `MainActivity.kt`: [example](https://github.com/flutter-stripe/flutter_stripe/blob/79b201a2e9b827196d6a97bb41e1d0e526632a5a/example/android/app/src/main/kotlin/com/flutter/stripe/example/MainActivity.kt#L6)
 
-This is caused by the Stripe SDK requires the use of the AppCompact theme for their UI components and the Support Fragment Manager for the Payment Sheets
+This is caused by the Stripe SDK requires the use of the AppCompat theme for their UI components and the Support Fragment Manager for the Payment Sheets
 
 #### iOS
 
@@ -170,11 +167,6 @@ Future<void> onGooglePayResult(paymentResult) async {
 
 - [Install the `stripe-cli`](https://stripe.com/docs/stripe-cli)
 - Run `stripe listen --forward-to localhost:4242/webhook`
-
-## Known issues
-
-- The Card field on Android has focus issues on older Flutter versions - it has been fixed by the Flutter framework in
-  the master branch. The issue is being tracked in [#14](https://github.com/flutter-stripe/flutter_stripe/issues/14).
 
 ## Contributing
 

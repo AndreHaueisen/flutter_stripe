@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:stripe_platform_interface/src/models/color.dart';
+import 'package:stripe_platform_interface/src/models/payment_methods.dart';
 
 part 'payment_sheet.freezed.dart';
 part 'payment_sheet.g.dart';
@@ -10,11 +12,11 @@ part 'payment_sheet.g.dart';
 @freezed
 class SetupPaymentSheetParameters with _$SetupPaymentSheetParameters {
   const factory SetupPaymentSheetParameters({
-    ///Whether or not to display a custom flow
+    /// Whether or not to use a custom flow.
     ///
-    /// When value is `false` make sure [PresentPaymentSheetParameters.confirmPayment]
-    /// is set to `true`. If value is set to `true` [PresentPaymentSheetParameters.confirmPayment]
-    /// has to be set to `false`.
+    /// If this value is true, the payment sheet will allow to select a payment method
+    /// and a later confirmation will be needed by calling [confirmPaymentSheetPayment]
+    /// By default, false.
     @Default(false) bool customFlow,
 
     /// The identifier of the Stripe Customer object.
@@ -54,8 +56,22 @@ class SetupPaymentSheetParameters with _$SetupPaymentSheetParameters {
     /// A merchantCountryCode would then be required
     bool? googlePay,
 
+    /// Flag that allows payment methods that do not move money at the send of the checkout.
+    ///
+    /// Defaul value is false.
+    @Default(false) bool allowsDelayedPaymentMethods,
+
+    /// Button color of the checkoutButton
+    ///
+    /// Make sure that there is enough contrast with the rest of the paymentsheet.
+    @JsonKey(toJson: ColorKey.toJson, fromJson: ColorKey.fromJson)
+        Color? primaryButtonColor,
+
     /// Flag for using the test environment
     @Default(false) bool testEnv,
+
+    /// Billing information of the customer.
+    BillingDetails? billingDetails,
   }) = _SetupParameters;
 
   factory SetupPaymentSheetParameters.fromJson(Map<String, dynamic> json) =>
@@ -84,6 +100,7 @@ class UserInterfaceStyleKey {
 
 /// Parameters used to display the payment sheet.
 @freezed
+@Deprecated('Parameters are now inherited from initPaymentSheet')
 class PresentPaymentSheetParameters with _$PresentPaymentSheetParameters {
   const factory PresentPaymentSheetParameters({
     /// Key used for client-side retrieval using a publishable key.
@@ -102,4 +119,3 @@ class PresentPaymentSheetParameters with _$PresentPaymentSheetParameters {
   factory PresentPaymentSheetParameters.fromJson(Map<String, dynamic> json) =>
       _$PresentPaymentSheetParametersFromJson(json);
 }
-

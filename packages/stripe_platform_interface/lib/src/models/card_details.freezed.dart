@@ -1,5 +1,6 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'card_details.dart';
 
@@ -33,7 +34,7 @@ class _$CardDetailsTearOff {
     );
   }
 
-  CardDetails fromJson(Map<String, Object> json) {
+  CardDetails fromJson(Map<String, Object?> json) {
     return CardDetails.fromJson(json);
   }
 }
@@ -158,7 +159,7 @@ class _$_CardDetailsConstructor extends _CardDetailsConstructor {
       : super._();
 
   factory _$_CardDetailsConstructor.fromJson(Map<String, dynamic> json) =>
-      _$_$_CardDetailsConstructorFromJson(json);
+      _$$_CardDetailsConstructorFromJson(json);
 
   @override
   final String? number;
@@ -177,26 +178,19 @@ class _$_CardDetailsConstructor extends _CardDetailsConstructor {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _CardDetailsConstructor &&
-            (identical(other.number, number) ||
-                const DeepCollectionEquality().equals(other.number, number)) &&
+        (other.runtimeType == runtimeType &&
+            other is _CardDetailsConstructor &&
+            (identical(other.number, number) || other.number == number) &&
             (identical(other.expirationYear, expirationYear) ||
-                const DeepCollectionEquality()
-                    .equals(other.expirationYear, expirationYear)) &&
+                other.expirationYear == expirationYear) &&
             (identical(other.expirationMonth, expirationMonth) ||
-                const DeepCollectionEquality()
-                    .equals(other.expirationMonth, expirationMonth)) &&
-            (identical(other.cvc, cvc) ||
-                const DeepCollectionEquality().equals(other.cvc, cvc)));
+                other.expirationMonth == expirationMonth) &&
+            (identical(other.cvc, cvc) || other.cvc == cvc));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(number) ^
-      const DeepCollectionEquality().hash(expirationYear) ^
-      const DeepCollectionEquality().hash(expirationMonth) ^
-      const DeepCollectionEquality().hash(cvc);
+      Object.hash(runtimeType, number, expirationYear, expirationMonth, cvc);
 
   @JsonKey(ignore: true)
   @override
@@ -206,7 +200,7 @@ class _$_CardDetailsConstructor extends _CardDetailsConstructor {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_CardDetailsConstructorToJson(this);
+    return _$$_CardDetailsConstructorToJson(this);
   }
 }
 
@@ -222,13 +216,13 @@ abstract class _CardDetailsConstructor extends CardDetails {
       _$_CardDetailsConstructor.fromJson;
 
   @override
-  String? get number => throw _privateConstructorUsedError;
+  String? get number;
   @override
-  int? get expirationYear => throw _privateConstructorUsedError;
+  int? get expirationYear;
   @override
-  int? get expirationMonth => throw _privateConstructorUsedError;
+  int? get expirationMonth;
   @override
-  String? get cvc => throw _privateConstructorUsedError;
+  String? get cvc;
   @override
   @JsonKey(ignore: true)
   _$CardDetailsConstructorCopyWith<_CardDetailsConstructor> get copyWith =>

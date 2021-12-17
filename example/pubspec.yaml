@@ -10,15 +10,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_stripe: ^1.2.0
-  pay: ^1.0.1
-  http: ^0.13.1
+  flutter_stripe: ^2.0.2
+  pay: ^1.0.5
+  http: ^0.13.3
   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  
 
 flutter:
   uses-material-design: true

@@ -6,17 +6,18 @@ class ResultParser<T> {
   }) : _parseJson = parseJson;
 
   T parse(
-      {required Map<String, dynamic> result, required String successResultKey}) {
+      {required Map<String, dynamic> result,
+      required String successResultKey}) {
     final successResponse = result[successResultKey];
 
     if (successResponse != null) {
       return _parseJson(successResponse);
     } else {
-      throw _parseError(result);
+      throw parseError(result);
     }
   }
 
-  StripeException _parseError(Map<String, dynamic> result) {
+  StripeException parseError(Map<String, dynamic> result) {
     return StripeException.fromJson(result);
   }
 

@@ -5,8 +5,7 @@ import com.facebook.react.bridge.Promise
 import com.facebook.react.bridge.ReactApplicationContext
 import com.facebook.react.bridge.ReadableMap
 import com.facebook.react.uimanager.ThemedReactContext
-import com.reactnativestripesdk.StripeSdkCardViewManager
-import com.reactnativestripesdk.StripeSdkModule
+import com.reactnativestripesdk.*
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
@@ -32,12 +31,33 @@ class StripeAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
         StripeSdkCardViewManager()
     }
 
+    private val cardFormViewManager: CardFormViewManager by lazy {
+        CardFormViewManager()
+    }
+
+    private val payButtonViewManager: GooglePayButtonManager by lazy {
+        GooglePayButtonManager()
+    }
+
+    private val aubecsDebitManager: AuBECSDebitFormViewManager by lazy {
+        AuBECSDebitFormViewManager()
+    }
+
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         channel = MethodChannel(flutterPluginBinding.binaryMessenger, "flutter.stripe/payments", JSONMethodCodec.INSTANCE)
         channel.setMethodCallHandler(this)
         flutterPluginBinding
                 .platformViewRegistry
-                .registerViewFactory("flutter.stripe/card_field", StripeSdkCardPlatformViewFactory(flutterPluginBinding, stripeSdkCardViewManager))
+                .registerViewFactory("flutter.stripe/card_field", StripeSdkCardPlatformViewFactory(flutterPluginBinding, stripeSdkCardViewManager) { stripeSdk })
+        flutterPluginBinding
+                .platformViewRegistry
+                .registerViewFactory("flutter.stripe/card_form_field", StripeSdkCardFormPlatformViewFactory(flutterPluginBinding, cardFormViewManager) { stripeSdk })
+        flutterPluginBinding
+                .platformViewRegistry
+                .registerViewFactory("flutter.stripe/google_pay_button", StripeSdkGooglePayButtonPlatformViewFactory(flutterPluginBinding, payButtonViewManager) { stripeSdk })
+        flutterPluginBinding
+            .platformViewRegistry
+            .registerViewFactory("flutter.stripe/aubecs_form_field",StripeAubecsDebitPlatformViewFactory(flutterPluginBinding, aubecsDebitManager){stripeSdk})
     }
 
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -90,7 +110,6 @@ class StripeAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
                     promise = Promise(result)
             )
             "presentPaymentSheet" -> stripeSdk.presentPaymentSheet(
-                    params = call.requiredArgument("params"),
                     promise = Promise(result)
             )
             "confirmPaymentSheetPayment" -> stripeSdk.confirmPaymentSheetPayment(
@@ -103,10 +122,22 @@ class StripeAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
             "dangerouslyUpdateCardDetails" -> {
                 stripeSdkCardViewManager.setCardDetails(
                     value = call.requiredArgument("params"),
-                    reactContext = ThemedReactContext(stripeSdk.currentActivity.activity, channel)
+                    reactContext = ThemedReactContext(stripeSdk.currentActivity.activity, channel) { stripeSdk }
                 )
                 result.success(null)
             }
+            "initGooglePay" -> stripeSdk.initGooglePay(
+                    params = call.requiredArgument("params"),
+                    promise = Promise(result)
+            )
+            "presentGooglePay" -> stripeSdk.presentGooglePay(
+                    params = call.requiredArgument("params"),
+                    promise = Promise(result)
+            )
+            "createGooglePayPaymentMethod" -> stripeSdk.createGooglePayPaymentMethod(
+                    params = call.requiredArgument("params"),
+                    promise = Promise(result)
+            )
             /*"registerConfirmSetupIntentCallbacks" -> stripeSdk.registerConfirmSetupIntentCallbacks(
                     successCallback = Promise(result),
                     errorCallback = Promise(result),
@@ -125,7 +156,7 @@ class StripeAndroidPlugin : FlutterPlugin, MethodCallHandler, ActivityAware {
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         if (binding.activity is FlutterFragmentActivity) {
-            stripeSdk = StripeSdkModule(ReactApplicationContext(binding), stripeSdkCardViewManager)
+            stripeSdk = StripeSdkModule(ReactApplicationContext(binding))
         } else {
             // no-op - will throw errors when method channel is called
         }

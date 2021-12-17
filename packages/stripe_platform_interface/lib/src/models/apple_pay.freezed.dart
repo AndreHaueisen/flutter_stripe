@@ -1,5 +1,6 @@
+// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
 
 part of 'apple_pay.dart';
 
@@ -36,7 +37,7 @@ class _$ApplePayShippingMethodTearOff {
     );
   }
 
-  ApplePayShippingMethod fromJson(Map<String, Object> json) {
+  ApplePayShippingMethod fromJson(Map<String, Object?> json) {
     return ApplePayShippingMethod.fromJson(json);
   }
 }
@@ -184,7 +185,7 @@ class _$_ApplePayShippingMethod implements _ApplePayShippingMethod {
       this.detail});
 
   factory _$_ApplePayShippingMethod.fromJson(Map<String, dynamic> json) =>
-      _$_$_ApplePayShippingMethodFromJson(json);
+      _$$_ApplePayShippingMethodFromJson(json);
 
   @override
   final String label;
@@ -205,28 +206,19 @@ class _$_ApplePayShippingMethod implements _ApplePayShippingMethod {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ApplePayShippingMethod &&
-            (identical(other.label, label) ||
-                const DeepCollectionEquality().equals(other.label, label)) &&
-            (identical(other.amount, amount) ||
-                const DeepCollectionEquality().equals(other.amount, amount)) &&
+        (other.runtimeType == runtimeType &&
+            other is _ApplePayShippingMethod &&
+            (identical(other.label, label) || other.label == label) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
             (identical(other.identifier, identifier) ||
-                const DeepCollectionEquality()
-                    .equals(other.identifier, identifier)) &&
-            (identical(other.type, type) ||
-                const DeepCollectionEquality().equals(other.type, type)) &&
-            (identical(other.detail, detail) ||
-                const DeepCollectionEquality().equals(other.detail, detail)));
+                other.identifier == identifier) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.detail, detail) || other.detail == detail));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(label) ^
-      const DeepCollectionEquality().hash(amount) ^
-      const DeepCollectionEquality().hash(identifier) ^
-      const DeepCollectionEquality().hash(type) ^
-      const DeepCollectionEquality().hash(detail);
+      Object.hash(runtimeType, label, amount, identifier, type, detail);
 
   @JsonKey(ignore: true)
   @override
@@ -236,7 +228,7 @@ class _$_ApplePayShippingMethod implements _ApplePayShippingMethod {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_ApplePayShippingMethodToJson(this);
+    return _$$_ApplePayShippingMethodToJson(this);
   }
 }
 
@@ -252,15 +244,15 @@ abstract class _ApplePayShippingMethod implements ApplePayShippingMethod {
       _$_ApplePayShippingMethod.fromJson;
 
   @override
-  String get label => throw _privateConstructorUsedError;
+  String get label;
   @override
-  String get amount => throw _privateConstructorUsedError;
+  String get amount;
   @override
-  String get identifier => throw _privateConstructorUsedError;
+  String get identifier;
   @override
-  ApplePayShippingMethodType? get type => throw _privateConstructorUsedError;
+  ApplePayShippingMethodType? get type;
   @override
-  String? get detail => throw _privateConstructorUsedError;
+  String? get detail;
   @override
   @JsonKey(ignore: true)
   _$ApplePayShippingMethodCopyWith<_ApplePayShippingMethod> get copyWith =>
@@ -284,7 +276,7 @@ class _$ApplePayCartSummaryItemTearOff {
     );
   }
 
-  ApplePayCartSummaryItem fromJson(Map<String, Object> json) {
+  ApplePayCartSummaryItem fromJson(Map<String, Object?> json) {
     return ApplePayCartSummaryItem.fromJson(json);
   }
 }
@@ -387,7 +379,7 @@ class _$_ApplePayCartSummaryItem implements _ApplePayCartSummaryItem {
   const _$_ApplePayCartSummaryItem({required this.label, required this.amount});
 
   factory _$_ApplePayCartSummaryItem.fromJson(Map<String, dynamic> json) =>
-      _$_$_ApplePayCartSummaryItemFromJson(json);
+      _$$_ApplePayCartSummaryItemFromJson(json);
 
   @override
 
@@ -406,18 +398,14 @@ class _$_ApplePayCartSummaryItem implements _ApplePayCartSummaryItem {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ApplePayCartSummaryItem &&
-            (identical(other.label, label) ||
-                const DeepCollectionEquality().equals(other.label, label)) &&
-            (identical(other.amount, amount) ||
-                const DeepCollectionEquality().equals(other.amount, amount)));
+        (other.runtimeType == runtimeType &&
+            other is _ApplePayCartSummaryItem &&
+            (identical(other.label, label) || other.label == label) &&
+            (identical(other.amount, amount) || other.amount == amount));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(label) ^
-      const DeepCollectionEquality().hash(amount);
+  int get hashCode => Object.hash(runtimeType, label, amount);
 
   @JsonKey(ignore: true)
   @override
@@ -427,7 +415,7 @@ class _$_ApplePayCartSummaryItem implements _ApplePayCartSummaryItem {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_ApplePayCartSummaryItemToJson(this);
+    return _$$_ApplePayCartSummaryItemToJson(this);
   }
 }
 
@@ -442,11 +430,11 @@ abstract class _ApplePayCartSummaryItem implements ApplePayCartSummaryItem {
   @override
 
   /// Short localized description of the item.
-  String get label => throw _privateConstructorUsedError;
+  String get label;
   @override
 
   /// The monetary amount.
-  String get amount => throw _privateConstructorUsedError;
+  String get amount;
   @override
   @JsonKey(ignore: true)
   _$ApplePayCartSummaryItemCopyWith<_ApplePayCartSummaryItem> get copyWith =>
@@ -479,7 +467,7 @@ class _$ApplePayPresentParamsTearOff {
     );
   }
 
-  ApplePayPresentParams fromJson(Map<String, Object> json) {
+  ApplePayPresentParams fromJson(Map<String, Object?> json) {
     return ApplePayPresentParams.fromJson(json);
   }
 }
@@ -658,7 +646,7 @@ class _$_ApplePayPresentParams implements _ApplePayPresentParams {
       this.shippingMethods});
 
   factory _$_ApplePayPresentParams.fromJson(Map<String, dynamic> json) =>
-      _$_$_ApplePayPresentParamsFromJson(json);
+      _$$_ApplePayPresentParamsFromJson(json);
 
   @override
 
@@ -695,40 +683,31 @@ class _$_ApplePayPresentParams implements _ApplePayPresentParams {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ApplePayPresentParams &&
-            (identical(other.cartItems, cartItems) ||
-                const DeepCollectionEquality()
-                    .equals(other.cartItems, cartItems)) &&
-            (identical(other.country, country) ||
-                const DeepCollectionEquality()
-                    .equals(other.country, country)) &&
+        (other.runtimeType == runtimeType &&
+            other is _ApplePayPresentParams &&
+            const DeepCollectionEquality().equals(other.cartItems, cartItems) &&
+            (identical(other.country, country) || other.country == country) &&
             (identical(other.currency, currency) ||
-                const DeepCollectionEquality()
-                    .equals(other.currency, currency)) &&
-            (identical(other.requiredShippingAddressFields,
-                    requiredShippingAddressFields) ||
-                const DeepCollectionEquality().equals(
-                    other.requiredShippingAddressFields,
-                    requiredShippingAddressFields)) &&
-            (identical(other.requiredBillingContactFields,
-                    requiredBillingContactFields) ||
-                const DeepCollectionEquality().equals(
-                    other.requiredBillingContactFields,
-                    requiredBillingContactFields)) &&
-            (identical(other.shippingMethods, shippingMethods) ||
-                const DeepCollectionEquality()
-                    .equals(other.shippingMethods, shippingMethods)));
+                other.currency == currency) &&
+            const DeepCollectionEquality().equals(
+                other.requiredShippingAddressFields,
+                requiredShippingAddressFields) &&
+            const DeepCollectionEquality().equals(
+                other.requiredBillingContactFields,
+                requiredBillingContactFields) &&
+            const DeepCollectionEquality()
+                .equals(other.shippingMethods, shippingMethods));
   }
 
   @override
-  int get hashCode =>
-      runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(cartItems) ^
-      const DeepCollectionEquality().hash(country) ^
-      const DeepCollectionEquality().hash(currency) ^
-      const DeepCollectionEquality().hash(requiredShippingAddressFields) ^
-      const DeepCollectionEquality().hash(requiredBillingContactFields) ^
-      const DeepCollectionEquality().hash(shippingMethods);
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(cartItems),
+      country,
+      currency,
+      const DeepCollectionEquality().hash(requiredShippingAddressFields),
+      const DeepCollectionEquality().hash(requiredBillingContactFields),
+      const DeepCollectionEquality().hash(shippingMethods));
 
   @JsonKey(ignore: true)
   @override
@@ -738,7 +717,7 @@ class _$_ApplePayPresentParams implements _ApplePayPresentParams {
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_ApplePayPresentParamsToJson(this);
+    return _$$_ApplePayPresentParamsToJson(this);
   }
 }
 
@@ -758,33 +737,29 @@ abstract class _ApplePayPresentParams implements ApplePayPresentParams {
   @override
 
   /// Line Items of the payment request.
-  List<ApplePayCartSummaryItem> get cartItems =>
-      throw _privateConstructorUsedError;
+  List<ApplePayCartSummaryItem> get cartItems;
   @override
 
   /// The two letter ISO 3166 country code representing the merchant.
-  String get country => throw _privateConstructorUsedError;
+  String get country;
   @override
 
   /// The three letter ISO 4217 code for the currency.
-  String get currency => throw _privateConstructorUsedError;
+  String get currency;
   @override
 
   /// Fields that will be shown on the required shipping address section. If
   /// empty no fields will be displayed.
-  List<ApplePayContactFieldsType>? get requiredShippingAddressFields =>
-      throw _privateConstructorUsedError;
+  List<ApplePayContactFieldsType>? get requiredShippingAddressFields;
   @override
 
   /// Fields that will be shown on the required billing address section. If
   /// empty no fields will be displayed.
-  List<ApplePayContactFieldsType>? get requiredBillingContactFields =>
-      throw _privateConstructorUsedError;
+  List<ApplePayContactFieldsType>? get requiredBillingContactFields;
   @override
 
   /// List of available shipping methods for goods.
-  List<ApplePayShippingMethod>? get shippingMethods =>
-      throw _privateConstructorUsedError;
+  List<ApplePayShippingMethod>? get shippingMethods;
   @override
   @JsonKey(ignore: true)
   _$ApplePayPresentParamsCopyWith<_ApplePayPresentParams> get copyWith =>
